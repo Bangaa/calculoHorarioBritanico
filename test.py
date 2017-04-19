@@ -53,7 +53,7 @@ class Horario:
 
         return afterdate + delay
 
-def calcularHorario(dia_inicio, horarios, num_horas):
+def calcularHorario(dia_inicio, horarios, num_horas, feriados):
     wdinicial = dia_inicio.weekday()
     num_minutos = num_horas*60
 
@@ -71,6 +71,11 @@ def calcularHorario(dia_inicio, horarios, num_horas):
         # buscar el siguiente dia de clases
         hr = horarios[index]
         diaclases = hr.sig_clase(itinerario[-1])
+
+        while diaclases in feriados:
+            index = (index + 1)%len(horarios)
+            hr = horarios[index]
+            diaclases = hr.sig_clase(itinerario[-1])
 
         num_minutos -= hr.duration
         itinerario.append(diaclases)
