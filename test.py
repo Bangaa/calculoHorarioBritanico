@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 
 from datetime import date, time, timedelta
+import re
 
 class Horario:
 
@@ -84,6 +85,15 @@ def calcularHorario(dia_inicio, horarios, num_horas, feriados):
 
     return itinerario[1:]
 
+def strToDate(fecha_str):
+    datematch = re.match(r'(?P<y>\d{4})\s*(?P<sep>[-/])\s*0*?(?P<m>[1-9]\d?)\s*(?P=sep)\s*0*?(?P<d>[1-9]\d?)',fecha_str)
+
+    year = int(datematch.group("y"))
+    month = int(datematch.group("m"))
+    day = int(datematch.group("d"))
+
+    return date(year, month, day)
+
 feriados = [date(2017,4,19), date(2017,4,25)]
 
 
@@ -93,11 +103,5 @@ canthr = 7                 # cantidad de horas contratadas
 horarios = [Horario(0, 930, 1030), Horario(1, 1500, 1700), Horario(2, 1500, 1700)]
 fechai = date(2017, 4, 18)  # fecha inicio de clases
 
-
-clases = calcularHorario(fechai, horarios, canthr)
-
-print "Hay %d clases" % len(clases)
-print "Ultima clase es el %s" % clases[-1]
-print "Horario: ", clases
 
 
