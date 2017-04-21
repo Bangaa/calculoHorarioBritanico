@@ -20,13 +20,13 @@ class Horario:
 
     def __lt__(self, horario):
         d = self.weekday - horario.weekday
-        if d < 0 or self.hora_i < horario.hora_i:
+        if d < 0 or self.hora_i < horario.hora_i and d == 0:
             return True
         return False
 
     def __gt__(self, horario):
         d = self.weekday - horario.weekday
-        if d > 0 or self.hora_i > horario.hora_i:
+        if d > 0 or self.hora_i > horario.hora_i and d == 0:
             return True
         return False
 
@@ -48,7 +48,6 @@ class Horario:
             delay = timedelta(days=6-afterdate.weekday()+self.weekday+1)
         elif difdias < 0:
             delay = timedelta(days=-difdias)
-            print delay
         else:
             delay = timedelta()
 
@@ -100,7 +99,7 @@ feriados = [date(2017,4,19), date(2017,4,25)]
 # datos de entrada
 
 canthr = 7                 # cantidad de horas contratadas
-horarios = [Horario(0, 930, 1030), Horario(1, 1500, 1700), Horario(2, 1500, 1700)]
+horarios = [Horario(0, 930, 1030), Horario(1, 1500, 1700), Horario(2, 1500, 1700)].sort()
 fechai = date(2017, 4, 18)  # fecha inicio de clases
 
 
