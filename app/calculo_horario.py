@@ -53,6 +53,7 @@ def construirItinerario(dia_inicio, horarios, num_horas, feriados):
 
         num_minutos -= hr.duracion()
         itinerario.append(diaclases)
+        ultimodiaagregado = diaclases
 
         index = (index + 1)%len(horarios)
 
