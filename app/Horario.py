@@ -6,8 +6,13 @@ import re
 
 class Horario:
 
-    # la hora inicial y final en formato "militar", ej: 940 para referirse a 
-    # las 09:40 y 2140 para referirse a las 21:40
+    # Constructor de un Horario. Las horas inicial y final se deben especificar
+    # en formato "militar", es decir,  940 para referirse a las 09:40 y 2140
+    # para referirse a las 21:40, etc.
+    # @param weekday Es el número del día de la semana. 0 es lunes y 6 es
+    # domingo.
+    # @param initial La hora inicial en formato "militar"
+    # @param final La hora final en formato "militar"
     def __init__(self, weekday, initial, final):
         self.hora_i = time(initial/100, initial%100)
         self.hora_f = time(final/100, final%100)
@@ -52,45 +57,4 @@ class Horario:
             delay = timedelta()
 
         return afterdate + delay
-
-def calcularHorario(dia_inicio, horarios, num_horas, feriados):
-    wdinicial = dia_inicio.weekday()
-    num_minutos = num_horas*60
-
-    itinerario = [dia_inicio]
-
-    index = 0   # por donde parto recorriendo la lista de horarios
-    diaclases = dia_inicio
-    while index < len(horarios):
-        if horarios[index].weekday == wdinicial:
-            break
-        index += 1
-
-
-    while num_minutos > 0:
-        # buscar el siguiente dia de clases
-        hr = horarios[index]
-        diaclases = hr.sig_clase(itinerario[-1])
-
-        while diaclases in feriados:
-            index = (index + 1)%len(horarios)
-            hr = horarios[index]
-            diaclases = hr.sig_clase(itinerario[-1])
-
-        num_minutos -= hr.duration
-        itinerario.append(diaclases)
-
-        index = (index + 1)%len(horarios)
-
-    return itinerario[1:]
-
-def strToDate(fecha_str):
-    # Expresión regular de una fecha (yyyy-mm-dd)
-    datematch = re.match(r'(?P<y>\d{4})\s*(?P<sep>[-/])\s*0*?(?P<m>[1-9]\d?)\s*(?P=sep)\s*0*?(?P<d>[1-9]\d?)',fecha_str)
-
-    year = int(datematch.group("y"))
-    month = int(datematch.group("m"))
-    day = int(datematch.group("d"))
-
-    return date(year, month, day)
 
