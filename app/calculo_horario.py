@@ -6,14 +6,15 @@
 #
 # Distributed under terms of the GPL license.
 
-from Horario import Horario
+from app.horario import Horario
 from datetime import timedelta, date
 
 # Devuelve la fecha del siguiente día 'dayofweek'. Por ejemplo, si hoy, 6 de
-# junio, es jueves, entonces 'nextDayOfWeek(0)' devuelve '10 de junio'.
-# @param dayofweek Es el número del día de la semana
+# junio, es jueves, entonces 'nextDayOfWeek(0)' devuelve '10 de julio'.
+# @param dayofweek Es el número del día de la semana (lunes es 0, martes es 1,
+# etc)
 # @param afterdate Es la fecha a partir de la cual se buscará el proximo
-# 'dayofweek'. Es opcional (default: datetime.date.today()).
+# 'dayofweek'. Es opcional (default: hoy).
 def nextDayOfWeek(dayofweek, afterdate = date.today()):
     difdias = afterdate.weekday() - dayofweek
 
@@ -26,20 +27,27 @@ def nextDayOfWeek(dayofweek, afterdate = date.today()):
 
     return afterdate + delay
 
-def construirItinerario(dia_inicio, horarios, num_horas, feriados):
-    wdinicial = dia_inicio.weekday()
+##
+# Devuelve una lista de fechas en las cuales el alumno deberá asistir a
+# clases.
+# @param fecha_inicio Es la fecha en la que comienzan las clases
+# @param horarios Horarios elegido por el alumno
+# @param num_horas Cantidad de horas contratadas
+# @param feriados Lista con las fechas en las que no se puede hacer clases.
+def construirItinerario(fecha_inicio, horarios, num_horas, feriados):
+    wdinicial = fecha_inicio.weekday()
     num_minutos = num_horas*60
 
     itinerario = []
 
     index = 0   # por donde parto recorriendo la lista de horarios
-    diaclases = dia_inicio
+    diaclases = fecha_inicio
     while index < len(horarios):
         if horarios[index].weekday == wdinicial:
             break
         index += 1
 
-    ultimodiaagregado = dia_inicio
+    ultimodiaagregado = fecha_inicio
     while num_minutos > 0:
         # buscar el siguiente dia de clases
         hr = horarios[index]

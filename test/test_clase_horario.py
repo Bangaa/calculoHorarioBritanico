@@ -1,8 +1,8 @@
 import unittest
-import app.Horario as H
+import app.horario as H
 from random import randint
 
-class TestUnitariosHorario(unittest.TestCase):
+class TestClassHorario(unittest.TestCase):
 
     def test_comparar_lt(self):
 

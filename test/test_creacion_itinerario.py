@@ -8,12 +8,12 @@
 
 
 import unittest
-import app.Horario as H
+import app.horario as H
 from app.calculo_horario import *
 from datetime import date
 
-class TestUnitariosConstruccionItinerario(unittest.TestCase):
-    
+class TestConstruccionItinerario(unittest.TestCase):
+
     def test_nextDayOfWeek(self):
 
         # siguiente martes a partir del 20/07/2017
