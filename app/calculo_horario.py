@@ -8,6 +8,7 @@
 
 from app.horario import Horario
 from datetime import timedelta, date
+import re
 
 # Devuelve la fecha del siguiente día 'dayofweek'. Por ejemplo, si hoy, 6 de
 # junio, es jueves, entonces 'nextDayOfWeek(0)' devuelve '10 de julio'.
@@ -69,7 +70,14 @@ def construirItinerario(fecha_inicio, horarios, num_horas, feriados):
 
 def strToDate(fecha_str):
     # Expresión regular de una fecha (yyyy-mm-dd)
-    datematch = re.match(r'(?P<y>\d{4})\s*(?P<sep>[-/])\s*0*?(?P<m>[1-9]\d?)\s*(?P=sep)\s*0*?(?P<d>[1-9]\d?)',fecha_str)
+    # datematch = re.match(r'(?P<y>\d{4})\s*(?P<sep>[-/])\s*0*?(?P<m>[1-9]\d?)\s*(?P=sep)\s*0*?(?P<d>[1-9]\d?)',fecha_str)
+    dateregex = re.compile(r""" 0*(?P<d>[1-9]+)         #dia
+                                \s*(?P<sep>[-/])\s*
+                                0*(?P<m>[1-9]+)         #mes
+                                \s*(?P=sep)\s*
+                                (?P<y>\d{4})$           #año
+                                """, re.X)
+    datematch = dateregex.match(fecha_str)
 
     year = int(datematch.group("y"))
     month = int(datematch.group("m"))

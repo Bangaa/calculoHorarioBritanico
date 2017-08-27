@@ -56,3 +56,8 @@ class TestConstruccionItinerario(unittest.TestCase):
         self.assertEqual(
                 resultado_esperado,
                 construirItinerario(dia_inicio, horarios, num_horas, feriados))
+
+    def test_convertir_string_a_fecha(self):
+
+        self.assertEqual(strToDate("26-08-2017"), date(2017, 8, 26))
+        self.assertEqual(strToDate("06-8-2017"), date(2017, 8, 6))
