@@ -7,7 +7,7 @@
 import sys
 from PyQt5.QtCore import QDate
 from PyQt5.QtWidgets import QApplication, QMainWindow
-from PyQt5.QtWidgets import QWidget, QDateEdit, QSpinBox, QPushButton, QTableWidget, QDialog
+from PyQt5.QtWidgets import QWidget, QDateEdit, QSpinBox, QPushButton, QTableWidget, QDialog, QComboBox, QTimeEdit
 from PyQt5.QtWidgets import QVBoxLayout, QHBoxLayout, QFormLayout
 from PyQt5.QtWidgets import QAction
 
@@ -47,6 +47,7 @@ class Formulario(QWidget):
         ## Agregar o eliminar horarios
 
         btnAddHorario = QPushButton("Agregar Horario")
+        btnAddHorario.clicked.connect(self.agregarHorario)
         btnDelHorario = QPushButton("Eliminar Horario")
 
         ## Tabla de horarios
@@ -72,6 +73,52 @@ class Formulario(QWidget):
         generalLayout.addWidget(self.tablaHorarios)
 
         self.setLayout(generalLayout)
+
+    def agregarHorario(self):
+        dialogo = NuevoHorarioDialog(self)
+        dialogo.exec()
+
+
+class NuevoHorarioDialog(QDialog):
+
+    def __init__(self, parent=None):
+        super().__init__(parent)
+        self.initUi()
+
+    def initUi(self):
+
+        ## formulario
+
+        cbDia = QComboBox(self)
+        for dia in ['Lunes', 'Martes', 'Miercoles', 'Jueves', 'Viernes', 'Sabado', 'Domingo']:
+            cbDia.addItem(dia)
+
+        desdeTP = QTimeEdit(self)
+        hastaTP = QTimeEdit(self)
+
+        ## botones
+
+        btnOk = QPushButton('Agregar')
+        btnOk.clicked.connect(self.accept)
+        btnCancelar = QPushButton('Cancelar')
+        btnCancelar.clicked.connect(self.reject)
+
+        ## posision widgets
+
+        formLayout = QHBoxLayout()
+        formLayout.addWidget(cbDia)
+        formLayout.addWidget(desdeTP)
+        formLayout.addWidget(hastaTP)
+
+        btnsLayout = QHBoxLayout()
+        btnsLayout.addWidget(btnOk)
+        btnsLayout.addWidget(btnCancelar)
+
+        generalLayout = QVBoxLayout()
+        generalLayout.addLayout(formLayout)
+        generalLayout.addLayout(btnsLayout)
+        self.setLayout(generalLayout)
+
 
 
 if __name__ == '__main__':
