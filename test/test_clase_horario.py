@@ -63,3 +63,19 @@ class TestClassHorario(unittest.TestCase):
         horario = H.Horario(1, 1030, 1215) # Martes entre las 10:30-12:00
 
         self.assertEqual(horario.duracion(), 105)
+
+    def test_creacion_horario_con_strings(self):
+        hrss = H.Horario(0, 1000, 1130)
+        hrcs = H.Horario(0, "10:00", "11:30")
+
+        self.assertEqual(hrss, hrcs)
+
+        hrss = H.Horario(0, 900, 1130)
+        hrcs = H.Horario(0, "09:00", "11:30")
+
+        self.assertEqual(hrss, hrcs)
+
+        hrss = H.Horario(0, 45, 325)
+        hrcs = H.Horario(0, "00:45", "03:25")
+
+        self.assertEqual(hrss, hrcs)

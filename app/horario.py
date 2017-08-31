@@ -14,6 +14,17 @@ class Horario:
     # @param initial La hora inicial en formato "militar"
     # @param final La hora final en formato "militar"
     def __init__(self, weekday, initial, final):
+        hrRegex = re.compile(r'^0?(\d+):0?(\d+)')
+        if type(initial) is str:
+            hr = int(hrRegex.match(initial)[1])
+            mi = int(hrRegex.match(initial)[2])
+            initial = hr*100 + mi
+
+        if type(final) is str:
+            hr = int(hrRegex.match(final)[1])
+            mi = int(hrRegex.match(final)[2])
+            final = hr*100 + mi
+
         self.__hora_i = time(initial//100, initial%100)
         self.__hora_f = time(final//100, final%100)
 
