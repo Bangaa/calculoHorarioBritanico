@@ -38,31 +38,31 @@ def nextDayOfWeek(dayofweek, afterdate = date.today()):
 def construirItinerario(fecha_inicio, horarios, num_horas, feriados):
     wdinicial = fecha_inicio.weekday()
     num_minutos = num_horas*60
+    horarios.sort()
 
     itinerario = []
 
     index = 0   # por donde parto recorriendo la lista de horarios
-    diaclases = fecha_inicio
     while index < len(horarios):
         if horarios[index].weekday == wdinicial:
             break
         index += 1
 
-    ultimodiaagregado = fecha_inicio
+    apartirdeldia = fecha_inicio - timedelta(days=1)
     while num_minutos > 0:
         # buscar el siguiente dia de clases
         hr = horarios[index]
-        diaclases = nextDayOfWeek(hr.weekday, ultimodiaagregado)
+        diaclases = nextDayOfWeek(hr.weekday, apartirdeldia)
 
         # Se busca el siguiente día para hacer clases que no sea feriado
         while diaclases in feriados:
             index = (index + 1)%len(horarios)
             hr = horarios[index]
-            diaclases = nextDayOfWeek(hr.weekday, ultimodiaagregado)
+            diaclases = nextDayOfWeek(hr.weekday, apartirdeldia)
 
         num_minutos -= hr.duracion()
         itinerario.append(diaclases)
-        ultimodiaagregado = diaclases
+        apartirdeldia = diaclases
 
         index = (index + 1)%len(horarios)
 
