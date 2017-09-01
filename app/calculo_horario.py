@@ -24,7 +24,7 @@ def nextDayOfWeek(dayofweek, afterdate = date.today()):
     elif difdias < 0:
         delay = timedelta(days=-difdias)
     else:
-        delay = timedelta()
+        delay = timedelta(days=7)
 
     return afterdate + delay
 
