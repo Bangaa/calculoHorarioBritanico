@@ -10,7 +10,6 @@ from PyQt5.QtWidgets import QApplication, QMainWindow
 from PyQt5.QtWidgets import QWidget, QDateEdit, QSpinBox, QPushButton, QTableView, QDialog, QComboBox, QTimeEdit
 from PyQt5.QtWidgets import QVBoxLayout, QHBoxLayout, QFormLayout
 from PyQt5.QtWidgets import QAction
-from PyQt5.QtGui import QFont, QBrush
 
 from app.horario import Horario
 
@@ -59,6 +58,11 @@ class Formulario(QWidget):
         self.tablaHorarios = QTableView()
         self.tablaHorarios.setModel(HorarioTableModel(self.horarios))
 
+        ## Botones para hacer el calculo de las clases
+
+        btnCalcular = QPushButton('Calcular')
+        btnCalcular.clicked.connect(self.listarClases)
+
         ## Ordenamiento de widgets
 
         generalLayout = QVBoxLayout()
@@ -75,9 +79,21 @@ class Formulario(QWidget):
         generalLayout.addLayout(btnsTablaLayout)
 
         generalLayout.addWidget(self.tablaHorarios)
-        generalLayout.addStretch(1)
+
+        btnsCalHorLayout = QHBoxLayout()
+        btnsCalHorLayout.addStretch(1)
+        btnsCalHorLayout.addWidget(btnCalcular)
+        generalLayout.addLayout(btnsCalHorLayout)
 
         self.setLayout(generalLayout)
+
+    def listarClases(self):
+        """
+        Se muestra un dialogo que muestra el primer dia de clases, el ultimo
+        dia de clases y la lista de todos los dias de clases que debe tomar el
+        alumno, incluyendo el primer y ultimo día
+        """
+        pass
 
     def agregarHorario(self):
         dialogo = NuevoHorarioDialog(self)
