@@ -5,17 +5,20 @@
 # Copyright © 2017 Ian
 
 import sys
-from PyQt5.QtCore import QDate
+from PyQt5.QtCore import QDate, QVariant, QAbstractTableModel, QModelIndex, Qt, QTime, QTimer, qDebug
 from PyQt5.QtWidgets import QApplication, QMainWindow
-from PyQt5.QtWidgets import QWidget, QDateEdit, QSpinBox, QPushButton, QTableWidget, QDialog, QComboBox, QTimeEdit
+from PyQt5.QtWidgets import QWidget, QDateEdit, QSpinBox, QPushButton, QTableView, QDialog, QComboBox, QTimeEdit
 from PyQt5.QtWidgets import QVBoxLayout, QHBoxLayout, QFormLayout
 from PyQt5.QtWidgets import QAction
+from PyQt5.QtGui import QFont, QBrush
+
+from app.horario import Horario
 
 class Aplicacion(QMainWindow):
     def __init__(self):
         super().__init__()
         self.initUi()
-        self.setGeometry(600, 300, 400, 300)
+        self.setGeometry(600, 300, 450, 400)
         self.setWindowTitle('Calculo horario')
         self.show()
 
@@ -34,8 +37,9 @@ class Formulario(QWidget):
 
     def __init__(self):
         super().__init__()
-        self.initUi()
         self.horarios = []
+
+        self.initUi()
 
     def initUi(self):
         fechaInicio = QDateEdit(QDate.currentDate(), self)
@@ -52,8 +56,8 @@ class Formulario(QWidget):
 
         ## Tabla de horarios
 
-        self.tablaHorarios = QTableWidget(0, 3, self)
-        self.tablaHorarios.setHorizontalHeaderLabels(['Dia', 'Desde', 'Hasta'])
+        self.tablaHorarios = QTableView()
+        self.tablaHorarios.setModel(HorarioTableModel(self.horarios))
 
         ## Ordenamiento de widgets
 
@@ -71,30 +75,70 @@ class Formulario(QWidget):
         generalLayout.addLayout(btnsTablaLayout)
 
         generalLayout.addWidget(self.tablaHorarios)
+        generalLayout.addStretch(1)
 
         self.setLayout(generalLayout)
 
     def agregarHorario(self):
         dialogo = NuevoHorarioDialog(self)
-        dialogo.exec()
+        if dialogo.exec() == QDialog.Accepted:
+            newhorario = Horario(dialogo.POST['dia'], dialogo.POST['desde'], dialogo.POST['hasta'])
+            self.horarios.append(newhorario)
+
+
+class HorarioTableModel(QAbstractTableModel):
+
+    def __init__(self, horariosList, parent=None):
+        super().__init__(parent)
+        self.horarios = horariosList
+
+    def rowCount(self, parent=QModelIndex()):
+        return 6
+
+    def columnCount(self, parent=QModelIndex()):
+        return 3
+
+    def data(self, index, role):
+        row = index.row()
+        col = index.column()
+        if row > len(self.horarios) - 1:
+            return QVariant()
+        horario = self.horarios[row]
+        horData = [horario.diaStr().capitalize(), horario.desde(), horario.hasta()]
+
+        if role == Qt.DisplayRole:
+            return horData[col]
+
+        return QVariant()
+
+    def headerData(self, section, orientation, role):
+        if role == Qt.DisplayRole:
+            if orientation == Qt.Horizontal:
+                headers = ['Dia', 'Desde', 'Hasta']
+                return headers[section]
+            else:
+                return section + 1
+
+        return QVariant()
 
 
 class NuevoHorarioDialog(QDialog):
 
     def __init__(self, parent=None):
         super().__init__(parent)
+        self.POST = {}
         self.initUi()
 
     def initUi(self):
 
         ## formulario
 
-        cbDia = QComboBox(self)
+        self.cbDia = QComboBox(self)
         for dia in ['Lunes', 'Martes', 'Miercoles', 'Jueves', 'Viernes', 'Sabado', 'Domingo']:
-            cbDia.addItem(dia)
+            self.cbDia.addItem(dia)
 
-        desdeTP = QTimeEdit(self)
-        hastaTP = QTimeEdit(self)
+        self.desdeTP = QTimeEdit(self)
+        self.hastaTP = QTimeEdit(self)
 
         ## botones
 
@@ -106,9 +150,9 @@ class NuevoHorarioDialog(QDialog):
         ## posision widgets
 
         formLayout = QHBoxLayout()
-        formLayout.addWidget(cbDia)
-        formLayout.addWidget(desdeTP)
-        formLayout.addWidget(hastaTP)
+        formLayout.addWidget(self.cbDia)
+        formLayout.addWidget(self.desdeTP)
+        formLayout.addWidget(self.hastaTP)
 
         btnsLayout = QHBoxLayout()
         btnsLayout.addWidget(btnOk)
@@ -118,6 +162,12 @@ class NuevoHorarioDialog(QDialog):
         generalLayout.addLayout(formLayout)
         generalLayout.addLayout(btnsLayout)
         self.setLayout(generalLayout)
+
+    def accept(self):
+        self.POST['dia'] = self.cbDia.currentIndex()
+        self.POST['desde'] = self.desdeTP.time().toString()
+        self.POST['hasta'] = self.hastaTP.time().toString()
+        super().accept()
 
 
 
