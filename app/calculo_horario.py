@@ -35,7 +35,7 @@ def nextDayOfWeek(dayofweek, afterdate = date.today()):
 # @param horarios Horarios elegido por el alumno
 # @param num_horas Cantidad de horas contratadas
 # @param feriados Lista con las fechas en las que no se puede hacer clases.
-def construirItinerario(fecha_inicio, horarios, num_horas, feriados):
+def construirItinerario(fecha_inicio, horarios, num_horas, feriados=[]):
     wdinicial = fecha_inicio.weekday()
     num_minutos = num_horas*60
     horarios.sort()
