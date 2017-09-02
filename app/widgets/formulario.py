@@ -84,11 +84,20 @@ class Formulario(QWidget):
         num_horas = self.hrsCont_w.value()
         feriados = self.feriados
 
-        clases = construirItinerario(fecha_inicio, horarios, num_horas, feriados)
-        clases.sort()
-        ultClase = clases[-1]
+        try:
+            clases = construirItinerario(fecha_inicio, horarios, num_horas, feriados)
+            ultClase = clases[-1]
 
-        self.lastDay_w.setText(ultClase.strftime("%A %d de %B del %Y"))
+            self.lastDay_w.setText(ultClase.strftime("%A %d de %B del %Y"))
+        except ValueError as ve:
+            mensaje = QMessageBox(QMessageBox.Critical, 'Error', 'Error de parametros', parent=self)
+            mensaje.setInformativeText(ve.args[0])
+            mensaje.exec()
+        except RuntimeError as rte:
+            mensaje = QMessageBox(QMessageBox.Critical, 'Error', 'Error mientras se calculaba el horario', parent=self)
+            mensaje.setInformativeText(rte.args[0])
+            mensaje.exec()
+
 
     def agregarHorario(self):
         dialogo = NuevoHorarioDialog(self)
