@@ -6,12 +6,11 @@
 
 import sys
 from PyQt5.QtCore import QDate, QVariant, QAbstractTableModel, QModelIndex, Qt, QTime, QTimer, qDebug
-from PyQt5.QtWidgets import QApplication, QMainWindow
-from PyQt5.QtWidgets import QWidget, QDateEdit, QSpinBox, QPushButton, QTableView, QDialog, QComboBox, QTimeEdit
-from PyQt5.QtWidgets import QVBoxLayout, QHBoxLayout, QFormLayout
-from PyQt5.QtWidgets import QAction
+from PyQt5.QtWidgets import *
+from datetime import date
 
 from app.horario import Horario
+from app.calculo_horario import construirItinerario
 
 class Aplicacion(QMainWindow):
     def __init__(self):
@@ -37,15 +36,16 @@ class Formulario(QWidget):
     def __init__(self):
         super().__init__()
         self.horarios = []
+        self.feriados = []
 
         self.initUi()
 
     def initUi(self):
-        fechaInicio = QDateEdit(QDate.currentDate(), self)
-        fechaInicio.setCalendarPopup(True)
+        self.fechaIn_w = QDateEdit(QDate.currentDate(), self)
+        self.fechaIn_w.setCalendarPopup(True)
 
-        hrsCont = QSpinBox(self)
-        hrsCont.setMinimum(0)
+        self.hrsCont_w = QSpinBox(self)
+        self.hrsCont_w.setMinimum(0)
 
         ## Agregar o eliminar horarios
 
@@ -58,6 +58,13 @@ class Formulario(QWidget):
         self.tablaHorarios = QTableView()
         self.tablaHorarios.setModel(HorarioTableModel(self.horarios))
 
+        ## Informacion de ultimo dia de clases
+
+        lblLastDay = QLabel('Ultimo día de clases')
+        self.lastDay_w = QLineEdit()
+        self.lastDay_w.setReadOnly(True)
+        lblLastDay.setBuddy(self.lastDay_w)
+
         ## Botones para hacer el calculo de las clases
 
         btnCalcular = QPushButton('Calcular')
@@ -68,8 +75,8 @@ class Formulario(QWidget):
         generalLayout = QVBoxLayout()
 
         formLayout = QFormLayout()
-        formLayout.addRow("Fecha inicio", fechaInicio)
-        formLayout.addRow("Horas contratadas", hrsCont)
+        formLayout.addRow("Fecha inicio", self.fechaIn_w)
+        formLayout.addRow("Horas contratadas", self.hrsCont_w)
         generalLayout.addLayout(formLayout)
 
         btnsTablaLayout = QHBoxLayout()
@@ -80,6 +87,9 @@ class Formulario(QWidget):
 
         generalLayout.addWidget(self.tablaHorarios)
 
+        generalLayout.addWidget(lblLastDay)
+        generalLayout.addWidget(self.lastDay_w)
+
         btnsCalHorLayout = QHBoxLayout()
         btnsCalHorLayout.addStretch(1)
         btnsCalHorLayout.addWidget(btnCalcular)
@@ -88,12 +98,16 @@ class Formulario(QWidget):
         self.setLayout(generalLayout)
 
     def listarClases(self):
-        """
-        Se muestra un dialogo que muestra el primer dia de clases, el ultimo
-        dia de clases y la lista de todos los dias de clases que debe tomar el
-        alumno, incluyendo el primer y ultimo día
-        """
-        pass
+        fecha_inicio = date(self.fechaIn_w.date().year(), self.fechaIn_w.date().month(), self.fechaIn_w.date().day())
+        horarios = self.horarios
+        num_horas = self.hrsCont_w.value()
+        feriados = self.feriados
+
+        clases = construirItinerario(fecha_inicio, horarios, num_horas, feriados)
+        clases.sort()
+        ultClase = clases[-1]
+
+        self.lastDay_w.setText(ultClase.strftime("%A %d de %B del %Y"))
 
     def agregarHorario(self):
         dialogo = NuevoHorarioDialog(self)
