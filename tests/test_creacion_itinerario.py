@@ -89,3 +89,31 @@ class TestConstruccionItinerario(unittest.TestCase):
         self.assertEqual(strToDate("06-8-2017"), date(2017, 8, 6))
         self.assertEqual(strToDate('2-10-2017'), date(2017, 10, 2))
 
+    def test_const_itin_sin_horarios_raises_exception(self):
+        diaI = date(2017, 9, 4)
+        hrsCont = 35
+        horarios = []
+
+        self.assertRaisesRegex(ValueError, "Se debe entregar al menos 1 horario",
+                construirItinerario, *(diaI, horarios, hrsCont, []))
+
+    def test_const_itin_raise_exception_fecha_inicio_sin_horario(self):
+        """
+        No se debería poder elegir por ejemplo un dia inicial lunes si es que
+        en los horarios no se elige el dia lunes.
+        """
+        diaI = date(2017, 9, 4)
+        hrsCont = 35
+        horarios = [Horario(1, 1000, 1100), Horario(2, 1000, 1100)]
+
+        self.assertRaisesRegex(RuntimeError, r'El dia inicial cae un dia (\w+) pero no se pudo encontrar ningun \1 dentro de los horarios',
+                construirItinerario, *(diaI, horarios, hrsCont))
+
+    def test_const_itin_raise_exception_horas_contratadas_es_cero(self):
+        diaI = date(2017,9,4)
+        horarios = [Horario(0, 1000, 1100)]
+        hrsCont = 0
+
+        self.assertRaisesRegex(ValueError, 'Las horas contratadas no pueden ser cero',
+                construirItinerario, *(diaI, horarios, hrsCont))
+

@@ -36,6 +36,12 @@ def nextDayOfWeek(dayofweek, afterdate = date.today()):
 # @param num_horas Cantidad de horas contratadas
 # @param feriados Lista con las fechas en las que no se puede hacer clases.
 def construirItinerario(fecha_inicio, horarios, num_horas, feriados=[]):
+
+    if len(horarios) == 0:
+        raise ValueError("Se debe entregar al menos 1 horario")
+    elif num_horas == 0:
+        raise ValueError("Las horas contratadas no pueden ser cero")
+
     wdinicial = fecha_inicio.weekday()
     num_minutos = num_horas*60
     horarios.sort()
@@ -47,6 +53,10 @@ def construirItinerario(fecha_inicio, horarios, num_horas, feriados=[]):
         if horarios[index].weekday == wdinicial:
             break
         index += 1
+
+    if index >= len(horarios):
+        dias = ['lunes', 'martes', 'miercoles', 'jueves', 'viernes', 'sabado', 'domingo']
+        raise RuntimeError(f'El dia inicial cae un dia {dias[wdinicial]} pero no se pudo encontrar ningun {dias[wdinicial]} dentro de los horarios')
 
     apartirdeldia = fecha_inicio - timedelta(days=1)
     while num_minutos > 0:
