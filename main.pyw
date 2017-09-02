@@ -15,6 +15,7 @@ class Aplicacion(QMainWindow):
         self.initUi()
         self.setGeometry(600, 300, 450, 400)
         self.setWindowTitle('Calculo horario')
+        self.statusBar()
         self.show()
 
     def initUi(self):
