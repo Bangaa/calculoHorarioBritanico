@@ -112,13 +112,12 @@ class HorarioTableModel(QAbstractTableModel):
     def data(self, index, role):
         row = index.row()
         col = index.column()
-        if row > len(self.horarios) - 1:
-            return QVariant()
-        horario = self.horarios[row]
-        horData = [horario.diaStr().capitalize(), horario.desde(), horario.hasta()]
 
         if role == Qt.DisplayRole:
-            return horData[col]
+            if row < len(self.horarios):
+                horario = self.horarios[row]
+                horData = [horario.diaStr().capitalize(), horario.desde(), horario.hasta()]
+                return horData[col]
 
         return QVariant()
 

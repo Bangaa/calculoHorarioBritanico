@@ -9,6 +9,10 @@ from PyQt5.QtWidgets import *
 
 from app.widgets.formulario import Formulario
 
+import locale
+
+locale.setlocale(locale.LC_ALL, 'esp_esp')
+
 class Aplicacion(QMainWindow):
     def __init__(self):
         super().__init__()
