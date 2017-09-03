@@ -10,6 +10,7 @@ import unittest
 import app.horario as H
 from app.calculo_horario import *
 from datetime import date
+from PyQt5.QtCore import QDate
 
 class TestConstruccionItinerario(unittest.TestCase):
 
@@ -72,11 +73,24 @@ class TestConstruccionItinerario(unittest.TestCase):
 
         self.assertEqual(resultado_esperado, resultado)
 
+    def test_construccion_itinerario_con_feriados_caso2(self):
+
+        dia_inicio = date(2017, 9, 4)
+        horarios = [Horario(0, 1000, 1100)]
+        feriados = [date(2017, 9, 11)]
+        num_horas = 3
+
+        resultado = construirItinerario(dia_inicio, horarios, num_horas, feriados)
+        resultado_esperado = [date(2017, 9, 4), date(2017, 9, 18), date(2017, 9, 25)]
+
+        self.assertEqual(resultado_esperado, resultado)
+
+
     def test_construccion_itinerario_dia_inicio_feriado(self):
-        dia_inicio = strToDate('05-09-2017')    # martes
+        dia_inicio = date(2017,9,5)    # martes
         hrsCont = 7
         horarios = [Horario(0, 1400, 1500), Horario(1, 1000, 1100)]
-        feriados = [strToDate('05-09-2017')]
+        feriados = [date(2017,9,5)]
 
         resultado = construirItinerario(dia_inicio, horarios, hrsCont, feriados)
 
@@ -116,3 +130,13 @@ class TestConstruccionItinerario(unittest.TestCase):
         self.assertRaisesRegex(ValueError, 'Las horas contratadas no pueden ser cero',
                 construirItinerario, *(diaI, horarios, hrsCont))
 
+    def test_construccion_itinerario_feriados_qtdates(self):
+        dia_inicio = date(2017, 9, 4)
+        horarios = [Horario(0, 1000, 1100)]
+        feriados = [QDate(2017, 9, 11)]
+        num_horas = 3
+
+        resultado = construirItinerario_qtdates(dia_inicio, horarios, num_horas, feriados)
+        resultado_esperado = [date(2017, 9, 4), date(2017, 9, 18), date(2017, 9, 25)]
+
+        self.assertEqual(resultado_esperado, resultado)

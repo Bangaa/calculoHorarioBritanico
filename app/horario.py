@@ -30,10 +30,13 @@ class Horario:
         self.weekday = weekday
 
     def dia(self): return self.weekday
+
     def diaStr(self):
         dia = ["lunes", "martes", "miercoles", "jueves", "viernes", "sabado", "domingo"]
         return dia[self.weekday]
+
     def desde(self): return self.__hora_i.isoformat()
+
     def hasta(self): return self.__hora_f.isoformat()
 
     def duracion(self):

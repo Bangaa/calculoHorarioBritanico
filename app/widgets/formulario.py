@@ -7,22 +7,23 @@ from PyQt5.QtWidgets import *
 from PyQt5.QtCore import QDate, QAbstractTableModel, QModelIndex, Qt, QVariant
 
 from app.horario import Horario
-from app.calculo_horario import construirItinerario
+from app.calculo_horario import construirItinerario_qtdates
 
 from datetime import date
 
 class Formulario(QWidget):
 
-    def __init__(self):
+    def __init__(self, calendar=None):
         super().__init__()
         self.horarios = []
-        self.feriados = []
+        self.calendar_w = calendar
 
         self.initUi()
 
     def initUi(self):
         self.fechaIn_w = QDateEdit(QDate.currentDate(), self)
         self.fechaIn_w.setCalendarPopup(True)
+        self.fechaIn_w.setCalendarWidget(self.calendar_w)
 
         self.hrsCont_w = QSpinBox(self)
         self.hrsCont_w.setMinimum(0)
@@ -81,10 +82,10 @@ class Formulario(QWidget):
         fecha_inicio = date(self.fechaIn_w.date().year(), self.fechaIn_w.date().month(), self.fechaIn_w.date().day())
         horarios = self.horarios
         num_horas = self.hrsCont_w.value()
-        feriados = self.feriados
+        feriados = [] if self.calendar_w is None else self.calendar_w.feriados()
 
         try:
-            clases = construirItinerario(fecha_inicio, horarios, num_horas, feriados)
+            clases = construirItinerario_qtdates(fecha_inicio, horarios, num_horas, feriados)
             ultClase = clases[-1]
 
             self.lastDay_w.setText(ultClase.strftime("%A %d de %B del %Y"))

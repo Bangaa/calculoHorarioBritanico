@@ -78,6 +78,14 @@ def construirItinerario(fecha_inicio, horarios, num_horas, feriados=[]):
 
     return itinerario
 
+def construirItinerario_qtdates(fecha_inicio, horarios, num_horas, feriados):
+    """
+    Funciona de la misma manera que construirItinerario pero los feriados se
+    entregan con objetos del tipo QDate
+    """
+    feriados = [date(*qtdate.getDate()) for qtdate in feriados]
+    return construirItinerario(fecha_inicio, horarios, num_horas, feriados)
+
 def strToDate(fecha_str):
     # Expresión regular de una fecha (yyyy-mm-dd)
     # datematch = re.match(r'(?P<y>\d{4})\s*(?P<sep>[-/])\s*0*?(?P<m>[1-9]\d?)\s*(?P=sep)\s*0*?(?P<d>[1-9]\d?)',fecha_str)

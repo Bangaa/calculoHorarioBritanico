@@ -8,6 +8,8 @@ import sys
 from PyQt5.QtWidgets import *
 
 from app.widgets.formulario import Formulario
+from app.widgets.calendar import CalendarWidget
+from app.QtWidgets import *
 
 import locale
 
@@ -23,14 +25,30 @@ class Aplicacion(QMainWindow):
         self.show()
 
     def initUi(self):
-        self.formulario = Formulario()
+        self.calendar_w = CalendarWidget()
+        self.formulario = Formulario(self.calendar_w)
         self.setCentralWidget(self.formulario)
 
         feriadosMenu = QAction('Feriados', self)
         feriadosMenu.setStatusTip('Muestra y edita los dias feriados')
+        feriadosMenu.triggered.connect(self.mostrarDialogoFeriados)
 
         menubar = self.menuBar()
         menubar.addAction(feriadosMenu)
+
+    def mostrarDialogoFeriados(self):
+        dialogo = AgregarFeriadosDialog(self.calendar_w.feriados(), self)
+        dialogo.exec()
+
+        feriados_antes = self.calendar_w.feriados()
+        feriados_despues = dialogo.calendar_w.feriados()
+
+
+        eliminar = feriados_antes - feriados_despues
+        agregar = feriados_despues - feriados_antes
+
+        self.calendar_w.agregarLosFeriados(agregar)
+        self.calendar_w.eliminarLosFeriados(eliminar)
 
 if __name__ == '__main__':
 
