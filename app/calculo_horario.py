@@ -65,6 +65,7 @@ def construirItinerario(fecha_inicio, horarios, num_horas, feriados=[]):
 
         # Se busca el siguiente día para hacer clases que no sea feriado
         while diaclases in feriados:
+            apartirdeldia = diaclases
             index = (index + 1)%len(horarios)
             hr = horarios[index]
             diaclases = nextDayOfWeek(hr.weekday, apartirdeldia)
