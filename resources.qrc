@@ -1,0 +1,47 @@
+<!DOCTYPE RCC><RCC version="1.0">
+<qresource prefix="h">
+  <file alias="add_black">assets/icons/drawable-hdpi/ic_add_black_18dp.png</file>
+  <file alias="add_circle_black">assets/icons/drawable-hdpi/ic_add_circle_black_18dp.png</file>
+  <file alias="date_range_black">assets/icons/drawable-hdpi/ic_date_range_black_18dp.png</file>
+  <file alias="date_range_white">assets/icons/drawable-hdpi/ic_date_range_white_36dp.png</file>
+  <file alias="library_add_black">assets/icons/drawable-hdpi/ic_library_add_black_18dp.png</file>
+  <file alias="playlist_add_black">assets/icons/drawable-hdpi/ic_playlist_add_black_18dp.png</file>
+</qresource>
+
+<qresource prefix="m">
+  <file alias="add_black">assets/icons/drawable-mdpi/ic_add_black_18dp.png</file>
+  <file alias="add_circle_black">assets/icons/drawable-mdpi/ic_add_circle_black_18dp.png</file>
+  <file alias="date_range_black">assets/icons/drawable-mdpi/ic_date_range_black_18dp.png</file>
+  <file alias="date_range_white">assets/icons/drawable-mdpi/ic_date_range_white_36dp.png</file>
+  <file alias="library_add_black">assets/icons/drawable-mdpi/ic_library_add_black_18dp.png</file>
+  <file alias="playlist_add_black">assets/icons/drawable-mdpi/ic_playlist_add_black_18dp.png</file>
+</qresource>
+
+<qresource prefix="x">
+  <file alias="add_black">assets/icons/drawable-xhdpi/ic_add_black_18dp.png</file>
+  <file alias="add_circle_black">assets/icons/drawable-xhdpi/ic_add_circle_black_18dp.png</file>
+  <file alias="date_range_black">assets/icons/drawable-xhdpi/ic_date_range_black_18dp.png</file>
+  <file alias="date_range_white">assets/icons/drawable-xhdpi/ic_date_range_white_36dp.png</file>
+  <file alias="library_add_black">assets/icons/drawable-xhdpi/ic_library_add_black_18dp.png</file>
+  <file alias="playlist_add_black">assets/icons/drawable-xhdpi/ic_playlist_add_black_18dp.png</file>
+</qresource>
+
+<qresource prefix="xx">
+  <file alias="add_black">assets/icons/drawable-xxhdpi/ic_add_black_18dp.png</file>
+  <file alias="add_circle_black">assets/icons/drawable-xxhdpi/ic_add_circle_black_18dp.png</file>
+  <file alias="date_range_black">assets/icons/drawable-xxhdpi/ic_date_range_black_18dp.png</file>
+  <file alias="date_range_white">assets/icons/drawable-xxhdpi/ic_date_range_white_36dp.png</file>
+  <file alias="library_add_black">assets/icons/drawable-xxhdpi/ic_library_add_black_18dp.png</file>
+  <file alias="playlist_add_black">assets/icons/drawable-xxhdpi/ic_playlist_add_black_18dp.png</file>
+</qresource>
+
+<qresource prefix='xxx'>
+  <file alias="add_black">assets/icons/drawable-xxxhdpi/ic_add_black_18dp.png</file>
+  <file alias="add_circle_black">assets/icons/drawable-xxxhdpi/ic_add_circle_black_18dp.png</file>
+  <file alias="date_range_black">assets/icons/drawable-xxxhdpi/ic_date_range_black_18dp.png</file>
+  <file alias="date_range_white">assets/icons/drawable-xxxhdpi/ic_date_range_white_36dp.png</file>
+  <file alias="library_add_black">assets/icons/drawable-xxxhdpi/ic_library_add_black_18dp.png</file>
+  <file alias="playlist_add_black">assets/icons/drawable-xxxhdpi/ic_playlist_add_black_18dp.png</file>
+</qresource>
+</RCC>
+<!-- vim:set syn=xml et sw=2 sts=-1: -->
