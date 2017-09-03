@@ -7,7 +7,7 @@
 import sys
 from PyQt5.QtWidgets import *
 
-from app.QtWidgets import Formulario, CalendarWidget, AgregarFeriadosDialog
+from app.QtExtendedWidgets import Formulario, CalendarWidget, AgregarFeriadosDialog
 
 import locale
 
