@@ -53,5 +53,6 @@ class Aplicacion(QMainWindow):
 if __name__ == '__main__':
 
     app = QApplication(sys.argv)
+    app.setStyle("fusion")
     ex = Aplicacion()
     sys.exit(app.exec_())
