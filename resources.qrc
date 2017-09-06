@@ -1,4 +1,8 @@
 <!DOCTYPE RCC><RCC version="1.0">
+<qresource>
+  <file alias="app-icon">assets/icons/calendar.png</file>
+</qresource>
+
 <qresource prefix="h">
   <file alias="add_black">assets/icons/drawable-hdpi/ic_add_black_18dp.png</file>
   <file alias="add_circle_black">assets/icons/drawable-hdpi/ic_add_circle_black_18dp.png</file>
