@@ -8,6 +8,7 @@
 from PyQt5.QtCore import Qt, QDate, QAbstractTableModel, QModelIndex, Qt, QVariant
 from PyQt5.QtWidgets import *
 from datetime import date
+from PyQt5.QtGui import QIcon
 
 from app.horario import Horario
 from app.calculo_horario import construirItinerario_qtdates
@@ -122,9 +123,9 @@ class Formulario(QWidget):
 
         ## Agregar o eliminar horarios
 
-        btnAddHorario = QPushButton("Agregar Horario")
+        btnAddHorario = QPushButton(QIcon(":/i/add_black"), "Agregar Horario")
         btnAddHorario.clicked.connect(self.agregarHorario)
-        btnDelHorario = QPushButton("Eliminar Horario")
+        btnDelHorario = QPushButton(QIcon(":/i/loop_black"), "Empezar de nuevo")
 
         ## Tabla de horarios
 
