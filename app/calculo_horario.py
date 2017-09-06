@@ -55,7 +55,7 @@ def construirItinerario(fecha_inicio, horarios, num_horas, feriados=[]):
 
     if index >= len(horarios):
         dias = ['lunes', 'martes', 'miercoles', 'jueves', 'viernes', 'sabado', 'domingo']
-        raise RuntimeError(f'El dia inicial cae un dia {dias[wdinicial]} pero no se pudo encontrar ningun {dias[wdinicial]} dentro de los horarios')
+        raise RuntimeError('El dia inicial cae un dia %s pero no se pudo encontrar ningun %s dentro de los horarios' % (dias[wdinicial],dias[wdinicial]))
 
     apartirdeldia = fecha_inicio - timedelta(days=1)
     while num_minutos > 0:

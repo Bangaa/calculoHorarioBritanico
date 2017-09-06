@@ -15,13 +15,13 @@ class Horario:
     def __init__(self, weekday, initial, final):
         hrRegex = re.compile(r'^0?(\d+):0?(\d+)')
         if type(initial) is str:
-            hr = int(hrRegex.match(initial)[1])
-            mi = int(hrRegex.match(initial)[2])
+            hr = int(hrRegex.match(initial).group(1))
+            mi = int(hrRegex.match(initial).group(2))
             initial = hr*100 + mi
 
         if type(final) is str:
-            hr = int(hrRegex.match(final)[1])
-            mi = int(hrRegex.match(final)[2])
+            hr = int(hrRegex.match(final).group(1))
+            mi = int(hrRegex.match(final).group(2))
             final = hr*100 + mi
 
         self.__hora_i = time(initial//100, initial%100)
