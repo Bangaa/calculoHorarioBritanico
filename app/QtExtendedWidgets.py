@@ -204,6 +204,7 @@ class Formulario(QWidget):
         self.hrsCont_w.setValue(0)
         self.fechaIn_w.setDate(QDate.currentDate())
         self.tablaHorarios.model().update()
+        self.lastDay_w.setText('')
 
     def agregarHorario(self):
         dialogo = NuevoHorarioDialog(self)
