@@ -51,12 +51,12 @@ class TestConstruccionItinerario(unittest.TestCase):
 
     def test_construccion_itinerario_sin_feriados_un_solo_horario(self):
 
-        dia_inicio = strToDate('04-09-2017')
+        dia_inicio = date(2017,9,4)
         hrsCont = 2
         horarios = [Horario(0, '14:00', '15:00')]
 
         resultado = construirItinerario(dia_inicio, horarios, hrsCont, [])
-        resultado_esperado = [strToDate('04-09-2017'), strToDate('11-09-2017')]
+        resultado_esperado = [date(2017,9,4), date(2017,9,11)]
 
         self.assertEqual(resultado, resultado_esperado)
 
@@ -94,7 +94,7 @@ class TestConstruccionItinerario(unittest.TestCase):
 
         resultado = construirItinerario(dia_inicio, horarios, hrsCont, feriados)
 
-        self.assertEqual(resultado[-1], strToDate('2-10-2017'))
+        self.assertEqual(resultado[-1], date(2017,10,2))
 
     def test_convertir_string_a_fecha(self):
 
