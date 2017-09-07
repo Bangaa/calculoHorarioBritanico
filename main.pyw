@@ -6,6 +6,8 @@
 
 import sys
 from PyQt5.QtWidgets import *
+from PyQt5.QtGui import QIcon
+import assets.resources
 
 from app.QtExtendedWidgets import Formulario, CalendarWidget, AgregarFeriadosDialog
 
@@ -20,6 +22,7 @@ class Aplicacion(QMainWindow):
         self.setGeometry(600, 300, 425, 512)
         self.setWindowTitle('Calculo horario')
         self.statusBar()
+        self.setWindowIcon(QIcon(":/app-icon"))
         self.show()
 
     def initUi(self):
