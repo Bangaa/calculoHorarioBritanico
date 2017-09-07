@@ -126,6 +126,7 @@ class Formulario(QWidget):
         btnAddHorario = QPushButton(QIcon(":/i/add_black"), "Agregar Horario")
         btnAddHorario.clicked.connect(self.agregarHorario)
         btnDelHorario = QPushButton(QIcon(":/i/loop_black"), "Empezar de nuevo")
+        btnDelHorario.clicked.connect(self.empezarDeNuevo)
 
         ## Tabla de horarios
 
@@ -143,6 +144,13 @@ class Formulario(QWidget):
 
         btnCalcular = QPushButton('Calcular')
         btnCalcular.clicked.connect(self.listarClases)
+
+        ## Tips de ayuda
+
+        self.fechaIn_w.setStatusTip('Fecha de la primera clase')
+        btnAddHorario.setStatusTip('Agrega un nuevo horario a la lista')
+        btnDelHorario.setStatusTip('Limpia el formulario para empezar de cero')
+        self.hrsCont_w.setStatusTip('Numero de horas que dura el curso')
 
         ## Ordenamiento de widgets
 
@@ -191,6 +199,11 @@ class Formulario(QWidget):
             mensaje.setInformativeText(rte.args[0])
             mensaje.exec()
 
+    def empezarDeNuevo(self):
+        self.horarios.clear()
+        self.hrsCont_w.setValue(0)
+        self.fechaIn_w.setDate(QDate.currentDate())
+        self.tablaHorarios.model().update()
 
     def agregarHorario(self):
         dialogo = NuevoHorarioDialog(self)
@@ -210,6 +223,9 @@ class HorarioTableModel(QAbstractTableModel):
 
     def columnCount(self, parent=QModelIndex()):
         return 3
+
+    def update(self, desde=(0,0), hasta=(5,2)):
+        self.dataChanged.emit(self.createIndex(*desde), self.createIndex(*hasta))
 
     def data(self, index, role):
         row = index.row()
