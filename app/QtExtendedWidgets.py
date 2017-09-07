@@ -145,6 +145,13 @@ class Formulario(QWidget):
         btnCalcular = QPushButton('Calcular')
         btnCalcular.clicked.connect(self.listarClases)
 
+        ## Tips de ayuda
+
+        self.fechaIn_w.setStatusTip('Fecha de la primera clase')
+        btnAddHorario.setStatusTip('Agrega un nuevo horario a la lista')
+        btnDelHorario.setStatusTip('Limpia el formulario para empezar de cero')
+        self.hrsCont_w.setStatusTip('Numero de horas que dura el curso')
+
         ## Ordenamiento de widgets
 
         generalLayout = QVBoxLayout()
