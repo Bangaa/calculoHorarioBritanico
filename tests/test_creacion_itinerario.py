@@ -51,12 +51,12 @@ class TestConstruccionItinerario(unittest.TestCase):
 
     def test_construccion_itinerario_sin_feriados_un_solo_horario(self):
 
-        dia_inicio = strToDate('04-09-2017')
+        dia_inicio = date(2017,9,4)
         hrsCont = 2
         horarios = [Horario(0, '14:00', '15:00')]
 
         resultado = construirItinerario(dia_inicio, horarios, hrsCont, [])
-        resultado_esperado = [strToDate('04-09-2017'), strToDate('11-09-2017')]
+        resultado_esperado = [date(2017,9,4), date(2017,9,11)]
 
         self.assertEqual(resultado, resultado_esperado)
 
@@ -94,13 +94,22 @@ class TestConstruccionItinerario(unittest.TestCase):
 
         resultado = construirItinerario(dia_inicio, horarios, hrsCont, feriados)
 
-        self.assertEqual(resultado[-1], strToDate('2-10-2017'))
+        self.assertEqual(resultado[-1], date(2017,10,2))
 
     def test_convertir_string_a_fecha(self):
 
         self.assertEqual(strToDate("26-08-2017"), date(2017, 8, 26))
         self.assertEqual(strToDate("06-8-2017"), date(2017, 8, 6))
         self.assertEqual(strToDate('2-10-2017'), date(2017, 10, 2))
+        self.assertEqual(strToDate('25 de diciembre'), date(2017, 12, 25))
+        self.assertEqual(strToDate('25 de Diciembre'), date(2017, 12, 25))
+        self.assertEqual(strToDate('25 de Diciembre del 2017'), date(2017, 12, 25))
+        self.assertEqual(strToDate('25 de Diciembre de 2018'), date(2018, 12, 25))
+        self.assertEqual(strToDate('25/ 12/17'), date(2017, 12, 25))
+        self.assertEqual(strToDate('25/12/18  '), date(2018, 12, 25))
+        self.assertEqual(strToDate('  12/25/17'), date(2017, 12, 25))
+        self.assertEqual(strToDate('Domingo, 2 de Julio'), date(2017,7,2))
+        self.assertEqual(strToDate('Domingo, 01 de Enero'), date(2017,1,1))
 
     def test_const_itin_sin_horarios_raises_exception(self):
         diaI = date(2017, 9, 4)

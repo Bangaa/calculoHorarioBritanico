@@ -87,18 +87,44 @@ def construirItinerario_qtdates(fecha_inicio, horarios, num_horas, feriados):
     return construirItinerario(fecha_inicio, horarios, num_horas, feriados)
 
 def strToDate(fecha_str):
-    # Expresión regular de una fecha (yyyy-mm-dd)
-    # datematch = re.match(r'(?P<y>\d{4})\s*(?P<sep>[-/])\s*0*?(?P<m>[1-9]\d?)\s*(?P=sep)\s*0*?(?P<d>[1-9]\d?)',fecha_str)
-    dateregex = re.compile(r"""^0?(?P<d>\d+)         #dia
-                                \s*(?P<sep>[-/])\s*
-                                0?(?P<m>\d+)         #mes
-                                \s*(?P=sep)\s*
-                                (?P<y>\d{4})$           #año
-                                """, re.X)
-    datematch = dateregex.match(fecha_str)
-    year = int(datematch.group("y"))
-    month = int(datematch.group("m"))
-    day = int(datematch.group("d"))
 
-    return date(year, month, day)
+    meses = "enero|febrero|marzo|abril|mayo|junio|julio|agosto|septiembre|octubre|noviembre|diciembre".split('|')
+
+    date_regex = [re.compile(r"0*(?P<d>\d{1,2}) \s* (?P<s>[-/.]) \s* 0*(?P<m>\d{1,2}) \s* (?P=s) 0*(?P<a>\d{4}|\d{2})",re.X), # nn/nn/nn[nn]
+            re.compile(r"0*(?P<d>\d{1,2}) \s* (?P<s>[-/.]) \s* 0*(?P<m>\d{1,2})",re.X), # nn/nn
+            re.compile(r"0*(?P<d>\d{1,2}) .* (?P<m>enero|febrero|marzo|abril|mayo|junio|julio|agosto|septiembre|octubre|noviembre|diciembre) .* (?P<a>\d{4})", re.I|re.X),
+            re.compile(r"0*(?P<d>\d{1,2}) .* (?P<m>enero|febrero|marzo|abril|mayo|junio|julio|agosto|septiembre|octubre|noviembre|diciembre)", re.I|re.X),
+            ]
+
+    match = None
+
+    for regex in date_regex:
+        match = regex.search(fecha_str)
+        if match:
+            break
+
+    if match is None:
+        raise ValueError("No se pudo parsear <%s>" % fecha_str)
+
+    dt = match.groupdict()
+
+    dia = int(dt['d'])
+
+    try:
+        mes = int(dt['m'])
+        if mes > 12:
+            aux = dia
+            dia = mes
+            mes = aux
+    except ValueError:
+        mes = meses.index(dt['m'].lower()) + 1
+
+    try:
+        anyo = int(dt['a'])
+        if anyo < 100:
+            anyo += 2000
+    except KeyError:
+        anyo = date.today().year
+
+    return date(anyo, mes, dia)
 
