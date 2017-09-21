@@ -5,11 +5,13 @@
 # Copyright © 2017 Ian
 
 import sys
+import os
 from PyQt5.QtWidgets import *
 from PyQt5.QtGui import QIcon
 import assets.resources
 
 from app.QtExtendedWidgets import Formulario, CalendarWidget, AgregarFeriadosDialog
+from app.calculo_horario import strToDate
 
 import locale
 
@@ -45,7 +47,6 @@ class Aplicacion(QMainWindow):
         feriadosMenu.addAction(editarFeriados)
         feriadosMenu.addAction(cargarFeriados)
 
-
     def mostrarDialogoFeriados(self):
         dialogo = AgregarFeriadosDialog(self.calendar_w.feriados(), self)
         dialogo.exec()
@@ -60,7 +61,17 @@ class Aplicacion(QMainWindow):
         self.calendar_w.eliminarLosFeriados(eliminar)
 
     def cargarFeriadosDesdeArchivo(self):
-        pass
+        fname = QFileDialog.getOpenFileName(self, 'Cargar feriados', os.environ['pwd'], 'Text files (*.txt)')
+
+        if fname[0]:
+            feriados = set()
+            with open(fname[0], 'r') as f:
+                for linea in f:
+                    feriados.add(strToDate(linea))
+                f.close()
+
+            self.calendar_w.agregarLosFeriados(feriados)
+
 
 if __name__ == '__main__':
 
