@@ -97,7 +97,6 @@ class TestConstruccionItinerario(unittest.TestCase):
         self.assertEqual(resultado[-1], date(2017,10,2))
 
     def test_convertir_string_a_fecha(self):
-
         self.assertEqual(strToDate("26-08-2017"), date(2017, 8, 26))
         self.assertEqual(strToDate("06-8-2017"), date(2017, 8, 6))
         self.assertEqual(strToDate('2-10-2017'), date(2017, 10, 2))
@@ -110,6 +109,16 @@ class TestConstruccionItinerario(unittest.TestCase):
         self.assertEqual(strToDate('  12/25/17'), date(2017, 12, 25))
         self.assertEqual(strToDate('Domingo, 2 de Julio'), date(2017,7,2))
         self.assertEqual(strToDate('Domingo, 01 de Enero'), date(2017,1,1))
+
+    def test_leer_feriados_de_feriadosDotCl(self):
+        fechasleidas = set()
+
+        with open('tests/feriados.cl.txt', 'r') as f:
+            for linea in f:
+                fechasleidas.add(strToDate(linea))
+            f.close()
+
+        self.assertEqual(len(fechasleidas), 20, "No se leyeron todos los feriados")
 
     def test_const_itin_sin_horarios_raises_exception(self):
         diaI = date(2017, 9, 4)

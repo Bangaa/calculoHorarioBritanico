@@ -30,12 +30,21 @@ class Aplicacion(QMainWindow):
         self.formulario = Formulario(self.calendar_w)
         self.setCentralWidget(self.formulario)
 
-        feriadosMenu = QAction('Feriados', self)
-        feriadosMenu.setStatusTip('Muestra y edita los dias feriados')
-        feriadosMenu.triggered.connect(self.mostrarDialogoFeriados)
-
         menubar = self.menuBar()
-        menubar.addAction(feriadosMenu)
+
+        feriadosMenu = menubar.addMenu('Feriados')
+        feriadosMenu.setStatusTip('Muestra y edita los dias feriados')
+
+        editarFeriados = QAction('Editar feriados', self)
+        editarFeriados.triggered.connect(self.mostrarDialogoFeriados)
+        editarFeriados.setStatusTip('Abre un calendario para agregar/eliminar dias feriados')
+        cargarFeriados = QAction('Cargar feriados', self)
+        cargarFeriados.triggered.connect(self.cargarFeriadosDesdeArchivo)
+        cargarFeriados.setStatusTip('Agrega dias feriados desde un archivo de texto')
+
+        feriadosMenu.addAction(editarFeriados)
+        feriadosMenu.addAction(cargarFeriados)
+
 
     def mostrarDialogoFeriados(self):
         dialogo = AgregarFeriadosDialog(self.calendar_w.feriados(), self)
@@ -44,12 +53,14 @@ class Aplicacion(QMainWindow):
         feriados_antes = self.calendar_w.feriados()
         feriados_despues = dialogo.calendar_w.feriados()
 
-
         eliminar = feriados_antes - feriados_despues
         agregar = feriados_despues - feriados_antes
 
         self.calendar_w.agregarLosFeriados(agregar)
         self.calendar_w.eliminarLosFeriados(eliminar)
+
+    def cargarFeriadosDesdeArchivo(self):
+        pass
 
 if __name__ == '__main__':
 
