@@ -5,11 +5,13 @@
 # Copyright © 2017 Ian
 
 import sys
+import os
 from PyQt5.QtWidgets import *
 from PyQt5.QtGui import QIcon
 import assets.resources
 
 from app.QtExtendedWidgets import Formulario, CalendarWidget, AgregarFeriadosDialog
+from app.calculo_horario import strToDate
 
 import locale
 
@@ -30,12 +32,20 @@ class Aplicacion(QMainWindow):
         self.formulario = Formulario(self.calendar_w)
         self.setCentralWidget(self.formulario)
 
-        feriadosMenu = QAction('Feriados', self)
-        feriadosMenu.setStatusTip('Muestra y edita los dias feriados')
-        feriadosMenu.triggered.connect(self.mostrarDialogoFeriados)
-
         menubar = self.menuBar()
-        menubar.addAction(feriadosMenu)
+
+        feriadosMenu = menubar.addMenu('Feriados')
+        feriadosMenu.setStatusTip('Muestra y edita los dias feriados')
+
+        editarFeriados = QAction('Editar feriados', self)
+        editarFeriados.triggered.connect(self.mostrarDialogoFeriados)
+        editarFeriados.setStatusTip('Abre un calendario para agregar/eliminar dias feriados')
+        cargarFeriados = QAction('Cargar feriados', self)
+        cargarFeriados.triggered.connect(self.cargarFeriadosDesdeArchivo)
+        cargarFeriados.setStatusTip('Agrega dias feriados desde un archivo de texto')
+
+        feriadosMenu.addAction(editarFeriados)
+        feriadosMenu.addAction(cargarFeriados)
 
     def mostrarDialogoFeriados(self):
         dialogo = AgregarFeriadosDialog(self.calendar_w.feriados(), self)
@@ -44,12 +54,24 @@ class Aplicacion(QMainWindow):
         feriados_antes = self.calendar_w.feriados()
         feriados_despues = dialogo.calendar_w.feriados()
 
-
         eliminar = feriados_antes - feriados_despues
         agregar = feriados_despues - feriados_antes
 
         self.calendar_w.agregarLosFeriados(agregar)
         self.calendar_w.eliminarLosFeriados(eliminar)
+
+    def cargarFeriadosDesdeArchivo(self):
+        fname = QFileDialog.getOpenFileName(self, 'Cargar feriados', os.environ['pwd'], 'Text files (*.txt)')
+
+        if fname[0]:
+            feriados = set()
+            with open(fname[0], 'r') as f:
+                for linea in f:
+                    feriados.add(strToDate(linea))
+                f.close()
+
+            self.calendar_w.agregarLosFeriados(feriados)
+
 
 if __name__ == '__main__':
 
