@@ -81,6 +81,9 @@ class Aplicacion(QMainWindow):
 
             self.calendar_w.agregarLosFeriados(feriados)
 
+            success = QMessageBox(QMessageBox.Information, 'Carga completa', 'Se cargaron %d feriados' % len(feriados), parent=self)
+            success.exec()
+
     def closeEvent(self, event):
         self.guardarConfiguracion()
         event.accept()
