@@ -12,6 +12,7 @@ import assets.resources
 
 from app.QtExtendedWidgets import Formulario, CalendarWidget, AgregarFeriadosDialog
 from app.calculo_horario import strToDate
+import pickle
 
 import locale
 
@@ -26,6 +27,14 @@ class Aplicacion(QMainWindow):
         self.statusBar()
         self.setWindowIcon(QIcon(":/app-icon"))
         self.show()
+
+        ## Cargar archivo de configuracion
+
+        conf = self.cargarConfiguracion()
+
+        if conf:
+            self.calendar_w.agregarLosFeriados(conf['feriados'])
+            self.statusBar().showMessage("Archivo de configuracion cargado")
 
     def initUi(self):
         self.calendar_w = CalendarWidget()
@@ -72,6 +81,47 @@ class Aplicacion(QMainWindow):
 
             self.calendar_w.agregarLosFeriados(feriados)
 
+    def closeEvent(self, event):
+        self.guardarConfiguracion()
+        event.accept()
+
+    def guardarConfiguracion(self, fname="horaculo.conf.data"):
+        """Guarda la configuracion en un archivo binario.
+
+        Esta accion se gatilla automaticamente al cerrar la aplicacion."""
+        conf = {"feriados": self.calendar_w.feriados()}
+
+        with open(fname, 'wb') as fb:
+            fb.write(pickle.dumps(conf))
+
+        return True
+
+    def cargarConfiguracion(self, fname="horaculo.conf.data"):
+        """Carga la configuracion desde un archivo binario.
+
+        Esta accion se gatilla automaticamente cuando empieza la
+        aplicacion.
+
+        Args:
+            fname: Nombre del archivo de respaldo (default
+                'horaculo.conf.data')
+        Returns:
+            Si es que existe el archivo de configuracion, devuelve un
+            diccionario que contiene las configuraciones de la aplicacion.
+            Entre las llaves del diccionario se encuentra: 'feriados'
+
+            Devuelve 'None' si es que no existe un archivo de respaldo.
+        """
+        try:
+            conff = open(fname, "rb")
+            conf = pickle.loads(conff.read())
+
+            return conf
+        except IOError:
+            return None
+        except Exception:
+            conff.close()
+            return None
 
 if __name__ == '__main__':
 

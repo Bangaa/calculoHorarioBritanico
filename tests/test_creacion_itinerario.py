@@ -85,7 +85,6 @@ class TestConstruccionItinerario(unittest.TestCase):
 
         self.assertEqual(resultado_esperado, resultado)
 
-
     def test_construccion_itinerario_dia_inicio_feriado(self):
         dia_inicio = date(2017,9,5)    # martes
         hrsCont = 7
@@ -119,6 +118,22 @@ class TestConstruccionItinerario(unittest.TestCase):
             f.close()
 
         self.assertEqual(len(fechasleidas), 20, "No se leyeron todos los feriados")
+
+    def test_cargar_feriados_archivo_binario(self):
+        import pickle
+        data = { date(2017, 9, 4), date(2017, 9, 18), date(2017, 9, 25) }
+        bdata = pickle.dumps(data)
+
+        with open('feriados-bin.data', 'wb') as f:
+            f.write(bdata)
+            f.close()
+
+        recovery = None
+        with open('feriados-bin.data', 'rb') as fb:
+            recovery = pickle.loads(fb.read())
+
+        self.assertEqual(data, recovery)
+
 
     def test_const_itin_sin_horarios_raises_exception(self):
         diaI = date(2017, 9, 4)
