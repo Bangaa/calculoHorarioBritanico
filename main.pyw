@@ -70,7 +70,7 @@ class Aplicacion(QMainWindow):
         self.calendar_w.eliminarLosFeriados(eliminar)
 
     def cargarFeriadosDesdeArchivo(self):
-        fname = QFileDialog.getOpenFileName(self, 'Cargar feriados', os.environ['pwd'], 'Text files (*.txt)')
+        fname = QFileDialog.getOpenFileName(self, caption='Cargar feriados', filter='Text files (*.txt)')
 
         if fname[0]:
             feriados = set()
