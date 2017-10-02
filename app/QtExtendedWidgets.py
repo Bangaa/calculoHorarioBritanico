@@ -119,7 +119,7 @@ class Formulario(QWidget):
         self.fechaIn_w.setCalendarWidget(self.calendar_w)
 
         self.hrsCont_w = QSpinBox(self)
-        self.hrsCont_w.setMinimum(0)
+        self.hrsCont_w.setRange(0, 1000000)
 
         ## Agregar o eliminar horarios
 
